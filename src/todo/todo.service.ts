@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './entities/todo.entity';
@@ -11,15 +11,13 @@ export class TodoService {
     @InjectRepository(Todo)
     private todoRepository: Repository<Todo>,
   ) {}
-  async create(createTodoDto: CreateTodoDto) {
-    console.log(createTodoDto);
-    const createdTodo = await this.todoRepository.create(createTodoDto);
 
-    return createdTodo;
+  async create(createTodoDto: CreateTodoDto) {
+    return await this.todoRepository.insert(createTodoDto);
   }
 
   findAll() {
-    return `This action returns all todo`;
+    return this.todoRepository.find();
   }
 
   findOne(id: number) {
@@ -27,7 +25,8 @@ export class TodoService {
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+    // TODO update todo
+    throw new HttpException(updateTodoDto, HttpStatus.NOT_IMPLEMENTED);
   }
 
   remove(id: number) {

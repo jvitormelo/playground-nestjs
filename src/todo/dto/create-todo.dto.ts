@@ -1,8 +1,11 @@
-export class CreateTodoDto {
-  public title: any;
-  public isDone: boolean;
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { AbstractDTO } from '../../common/utils/AbstractDTO';
 
-  constructor(props) {
-    this.title = props.title;
-  }
+export class CreateTodoDto extends AbstractDTO {
+  @IsString()
+  title: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isDone: boolean;
 }
