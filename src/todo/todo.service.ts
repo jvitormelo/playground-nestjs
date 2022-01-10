@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './entities/todo.entity';
@@ -13,23 +13,29 @@ export class TodoService {
   ) {}
 
   async create(createTodoDto: CreateTodoDto) {
-    return await this.todoRepository.insert(createTodoDto);
+    return await this.todoRepository.save(createTodoDto);
   }
 
   findAll() {
-    return this.todoRepository.find();
+    return this.todoRepository.find({ order: { createdAt: 'DESC' } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
+  async findOne(id: number) {
+    const todo = await this.todoRepository.findOne(id);
+    if (!todo) throw new NotFoundException('Todo não encontrado');
+
+    return todo;
   }
 
+  // TODO retornar o objeto inteiro atualizado
   update(id: number, updateTodoDto: UpdateTodoDto) {
-    // TODO update todo
-    throw new HttpException(updateTodoDto, HttpStatus.NOT_IMPLEMENTED);
+    return this.todoRepository.save(
+      { ...updateTodoDto, id },
+      { transaction: true },
+    );
   }
 
   remove(id: number) {
-    return `This action removes a #${id} todo`;
+    return this.todoRepository.delete(id);
   }
 }

@@ -1,7 +1,7 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
-import { AbstractDTO } from '../../common/utils/AbstractDTO';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateTodoDto extends AbstractDTO {
+export class CreateTodoDto {
+  @IsNotEmpty()
   @IsString()
   title: string;
 
