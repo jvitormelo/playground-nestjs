@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Todo } from 'src/todo/entities/todo.entity';
+import { Todo } from 'src/modules/todo/entities/todo.entity';
+import { User } from '../modules/users/entities/user.entity';
 
 export default (): TypeOrmModuleOptions => ({
   type: 'postgres',
@@ -8,6 +9,6 @@ export default (): TypeOrmModuleOptions => ({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [Todo],
+  entities: [Todo, User],
   synchronize: process.env.NODE_ENV !== 'production',
 });

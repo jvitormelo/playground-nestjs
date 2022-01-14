@@ -29,10 +29,7 @@ export class TodoService {
 
   // TODO retornar o objeto inteiro atualizado
   update(id: number, updateTodoDto: UpdateTodoDto) {
-    return this.todoRepository.save(
-      { ...updateTodoDto, id },
-      { transaction: true },
-    );
+    return this.todoRepository.save({ ...updateTodoDto, id });
   }
 
   remove(id: number) {
