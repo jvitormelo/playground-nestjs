@@ -11,8 +11,8 @@ import { UsersModule } from './modules/users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [postgresConnection] }),
-    TodoModule,
     TypeOrmModule.forRoot(postgresConnection()),
+    TodoModule,
     UsersModule,
   ],
   controllers: [AppController],

@@ -17,7 +17,6 @@ export class UsersService {
   ) {}
   async create(createUserDto: CreateUserDto) {
     try {
-      console.log('chamou');
       return await this.userRepository.save(createUserDto);
     } catch (e) {
       console.log(e);
@@ -35,6 +34,7 @@ export class UsersService {
 
   async findOne(id: number) {
     const user = await this.userRepository.findOne(id);
+
     // TODO ver com alguem que sabe
     if (!user) throw new BadRequestException();
     return user;
