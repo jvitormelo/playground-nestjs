@@ -10,6 +10,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 
+interface FindOneParams {
+  id?: number;
+  email?: string;
+}
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -32,8 +37,8 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  async findOne(id: number) {
-    const user = await this.userRepository.findOne(id);
+  async findOne(params: FindOneParams) {
+    const user = await this.userRepository.findOne({ where: params });
 
     // TODO ver com alguem que sabe
     if (!user) throw new BadRequestException();
