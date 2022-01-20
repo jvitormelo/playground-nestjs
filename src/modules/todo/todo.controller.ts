@@ -6,10 +6,13 @@ import {
   Param,
   Post,
   Put,
+  Req,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { UserRequest } from '../../common/decorators/user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @Controller('todos')
 export class TodoController {
@@ -19,13 +22,14 @@ export class TodoController {
   async create(
     @Body()
     createTodoDto: CreateTodoDto,
+    @UserRequest() user: UserRequest,
   ) {
-    return await this.todoService.create(createTodoDto);
+    return await this.todoService.create(createTodoDto, user);
   }
 
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  findAll(@UserRequest() user: User) {
+    return this.todoService.findAll(user.id);
   }
 
   @Get(':id')

@@ -25,15 +25,13 @@ export class AuthService {
     }
 
     delete user.password;
-
     return user;
   }
 
   async login(user: User) {
-    const payload = { id: user.id };
     return {
       user,
-      token: this.jwtService.sign(payload),
+      token: this.jwtService.sign({ ...user }),
     };
   }
 }

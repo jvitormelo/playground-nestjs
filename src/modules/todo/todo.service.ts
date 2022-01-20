@@ -12,12 +12,20 @@ export class TodoService {
     private todoRepository: Repository<Todo>,
   ) {}
 
-  async create(createTodoDto: CreateTodoDto) {
-    return await this.todoRepository.save(createTodoDto);
+  async create(createTodoDto: CreateTodoDto, user: any) {
+    return await this.todoRepository.save({
+      ...createTodoDto,
+      user,
+    });
   }
 
-  findAll() {
-    return this.todoRepository.find({ order: { createdAt: 'DESC' } });
+  findAll(userId: number) {
+    return this.todoRepository.find({
+      order: { createdAt: 'DESC' },
+      where: {
+        user: { id: userId },
+      },
+    });
   }
 
   async findOne(id: number) {
