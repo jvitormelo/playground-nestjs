@@ -5,7 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { TodoList } from '../../todo-list/entities/todo-list.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Todo {
@@ -24,6 +25,7 @@ export class Todo {
   })
   createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.todos)
-  user: User;
+  @Exclude()
+  @ManyToOne(() => TodoList, (todoList) => todoList.todos)
+  todoList: TodoList;
 }

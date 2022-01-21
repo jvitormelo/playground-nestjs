@@ -22,7 +22,8 @@ export class UsersService {
   ) {}
   async create(createUserDto: CreateUserDto) {
     try {
-      return await this.userRepository.save(createUserDto);
+      const user = await this.userRepository.create(createUserDto);
+      return await this.userRepository.save(user);
     } catch (e) {
       console.log(e);
       if (e.code === '23505') {
@@ -41,13 +42,14 @@ export class UsersService {
     const user = await this.userRepository.findOne({ where: params });
 
     // TODO ver com alguem que sabe
-    if (!user) throw new BadRequestException();
+    if (!user) throw new BadRequestException('Usuário não encontrado');
     return user;
   }
 
-  update(updateUserDto: UpdateUserDto) {
+  async update(updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.create(updateUserDto);
     // TODO quando atualizar com email unico esta dando erro, criar tratativa global
-    return this.userRepository.save(updateUserDto);
+    return this.userRepository.save(user);
   }
 
   remove(id: number) {

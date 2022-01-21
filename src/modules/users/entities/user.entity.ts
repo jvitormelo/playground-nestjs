@@ -1,6 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { Todo } from '../../todo/entities/todo.entity';
+import { createHash } from '../../../common/utils/hash.util';
+import { TodoList } from '../../todo-list/entities/todo-list.entity';
 
 @Entity()
 export class User {
@@ -20,6 +28,13 @@ export class User {
   @Column()
   cellphone: string;
 
-  @OneToMany(() => Todo, (todo) => todo.user)
-  todos: Todo[];
+  @OneToMany(() => TodoList, (todoList) => todoList.user)
+  todoList: TodoList[];
+
+  // Criar a logica se deve hashear
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    this.password = await createHash(this.password);
+  }
 }

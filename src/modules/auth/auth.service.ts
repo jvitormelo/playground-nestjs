@@ -1,11 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/user.entity';
+import { checkHash } from '../../common/utils/hash.util';
 
 @Injectable()
 export class AuthService {
@@ -14,17 +11,18 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  // TODO melhorar feedback
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findOne({ email });
 
-    if (!user) throw new BadRequestException('Usuário não encontrado');
+    const isMatch = await checkHash(password, user.password);
 
-    // TODO criptografia
-    if (user.password !== password) {
+    if (!isMatch) {
       throw new UnauthorizedException('Dados inválidos');
     }
 
     delete user.password;
+
     return user;
   }
 
