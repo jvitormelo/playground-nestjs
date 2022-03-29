@@ -22,7 +22,7 @@ export class User {
   @Exclude({ toPlainOnly: true })
   password: string;
 
-  @Column()
+  @Column({ default: '', type: 'varchar' })
   name: string;
 
   @Column()

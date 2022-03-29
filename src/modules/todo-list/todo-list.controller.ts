@@ -26,8 +26,8 @@ export class TodoListController {
   }
 
   @Get()
-  findAll() {
-    return this.todoListService.findAll();
+  findAll(@UserRequest() user: User) {
+    return this.todoListService.findAll(user.id);
   }
 
   @Get(':id')

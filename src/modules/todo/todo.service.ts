@@ -12,10 +12,10 @@ export class TodoService {
     private todoRepository: Repository<Todo>,
   ) {}
 
-  async create(createTodoDto: CreateTodoDto) {
+  async create(createTodoDto: CreateTodoDto, todoListId: number) {
     return await this.todoRepository.save({
       ...createTodoDto,
-      todoList: { id: createTodoDto.todoListId },
+      todoList: { id: todoListId },
     });
   }
 

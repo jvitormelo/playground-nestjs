@@ -15,12 +15,13 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
-  @Post()
+  @Post(':id')
   async create(
     @Body()
     createTodoDto: CreateTodoDto,
+    @Param('id') todoListId: number,
   ) {
-    return await this.todoService.create(createTodoDto);
+    return await this.todoService.create(createTodoDto, todoListId);
   }
 
   @Get()

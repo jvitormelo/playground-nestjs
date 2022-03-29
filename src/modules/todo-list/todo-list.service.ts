@@ -13,7 +13,6 @@ export class TodoListService {
   ) {}
 
   async create(createTodoListDto: CreateTodoListDto, userId: number) {
-    console.log(userId);
     const todoList = await this.todoListRepository.create({
       ...createTodoListDto,
       user: { id: userId },
@@ -21,8 +20,13 @@ export class TodoListService {
     return this.todoListRepository.save(todoList);
   }
 
-  findAll() {
-    return this.todoListRepository.find();
+  findAll(userId: number) {
+    return this.todoListRepository.find({
+      relations: ['todos'],
+      where: {
+        user: userId,
+      },
+    });
   }
 
   findOne(id: number) {
